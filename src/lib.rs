@@ -23,33 +23,42 @@ type TreeRef = Rc<RefCell<Tree>>;
 trait Mode {}
 
 enum Operation {
-    ADD,
-    DELETE,
-    CHANGE,
-}
-
-struct LineOp {
-    op: Operation,
-    line: u32,
-    string: String,
-}
-
-impl LineOp {
-    fn new(op: Operation, line: u32, string: String) -> Self {
-        LineOp {
-            op: op,
-            line: line,
-            string: string,
-        }
-    }
+    ADD(u32, String),
+    DELETE(u32),
+    CHANGE(u32, String),
 }
 
 struct Diff {
-    operations: Vec<LineOp>,
+    operations: Vec<Operation>,
 }
 
 impl Diff {
-    fn apply(before: &String) -> String {}
+    fn apply(&self, before: &str) -> String {
+        let mut lines: Vec<Vec<&str>> = vec![];
+        lines.push(vec![]);
+
+        for line in before.lines() {
+            lines.push(vec![line]);
+        }
+
+        for line in self.operations.into_iter_mut() {
+            match line.op {
+                Operation::ADD => todo!(),
+                Operation::DELETE => todo!(),
+                Operation::CHANGE => todo!(),
+            }
+        }
+
+        let mut result = String::new();
+
+        for arr in lines {
+            for line in arr {
+                result += line;
+            }
+        }
+
+        result
+    }
 }
 
 impl Mode for Diff {}
